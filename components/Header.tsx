@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 
 const Header = () => {
@@ -11,7 +10,7 @@ const Header = () => {
       data-easing="ease"
       data-easing2="ease"
       role="banner"
-      className="pt-7 md:pt-6 pb-7 md:pb-6 bg-transparent absolute left-0 top-0 right-0 w-nav"
+      className="pt-7 md:pt-6 pb-7 md:pb-6 !bg-[#1f3584] absolute left-0 top-0 right-0 relative z-[1000]"
     >
       <div className="max-w-[1268px] mx-auto px-6 flex-1 md:flex-col md:items-stretch mx-auto max-w-[940px]">
         <div className="flex justify-between items-center">
