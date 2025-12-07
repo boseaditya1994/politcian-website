@@ -55,6 +55,22 @@ const Header = () => {
                     About
                   </a>
                 </li>
+                <li className="block mr-[28px]">
+                  <a
+                    href="/about"
+                    className="!text-white hover:!text-[#ff344c] !no-underline transition-colors duration-[350ms] ease-in-out"
+                  >
+                    Blogs
+                  </a>
+                </li>
+                <li className="block mr-[28px]">
+                  <a
+                    href="/about"
+                    className="!text-white hover:!text-[#ff344c] !no-underline transition-colors duration-[350ms] ease-in-out"
+                  >
+                    Contact
+                  </a>
+                </li>
               </ul>
             </nav>
           </div>
