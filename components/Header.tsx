@@ -1,103 +1,137 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+
+const navItems = [
+  ["Home", "/"],
+  ["About", "/about"],
+  ["Blogs", "/blogs"],
+  ["Contact", "/contact"],
+];
 
 const Header = () => {
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  /* ✅ Close menu on route change */
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  /* ✅ Lock body scroll */
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
-    <header
-      data-collapse="medium"
-      data-animation="over-left"
-      data-duration="400"
-      data-w-id="556ebc81-b554-8299-bc0d-bf84370dd504"
-      data-easing="ease"
-      data-easing2="ease"
-      role="banner"
-      className="pt-7 md:pt-6 pb-7 md:pb-6 !bg-[#1f3584] absolute left-0 top-0 right-0 relative z-[1000]"
-    >
-      <div className="max-w-[1268px] mx-auto px-6 flex-1 md:flex-col md:items-stretch mx-auto max-w-[940px]">
-        <div className="flex justify-between items-center">
-          {/* Right Section */}
-          <div className="relative z-[100] flex items-center">
-            <a
-              href="/"
-              aria-current="page"
-              className="mr-8 pl-0 relative float-left no-underline text-[#333333] w--current"
-              aria-label="home"
-            >
+    <>
+      {/* HEADER BAR */}
+      <header className="fixed top-0 left-0 right-0 z-[1000] bg-[#1f3584]">
+        <div className="max-w-[1268px] mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            {/* LOGO */}
+            <a href="/" className="flex items-center">
               <Image
                 src="/images/party_logo.webp"
                 alt="Logo"
                 width={150}
                 height={40}
-                className="w-[50px] transition-transform duration-300 ease-in-out hover:translate-y-[2px]"
+                className="w-[50px]"
               />
             </a>
 
-            <nav role="navigation" className="relative float-right">
-              <ul
-                role="list"
-                className="flex mt-0 !mb-0 pl-0 justify-end items-center list-none"
-              >
-                <li className="block mr-[28px]">
-                  <a
-                    href="/"
-                    aria-current="page"
-                    className="!text-white hover:!text-[#ff344c] !no-underline transition-colors duration-[350ms] ease-in-out"
-                  >
-                    Home
-                  </a>
-                </li>
-
-                <li className="block mr-[28px]">
-                  <a
-                    href="/about"
-                    className="!text-white hover:!text-[#ff344c] !no-underline transition-colors duration-[350ms] ease-in-out"
-                  >
-                    About
-                  </a>
-                </li>
-                <li className="block mr-[28px]">
-                  <a
-                    href="/about"
-                    className="!text-white hover:!text-[#ff344c] !no-underline transition-colors duration-[350ms] ease-in-out"
-                  >
-                    Blogs
-                  </a>
-                </li>
-                <li className="block mr-[28px]">
-                  <a
-                    href="/about"
-                    className="!text-white hover:!text-[#ff344c] !no-underline transition-colors duration-[350ms] ease-in-out"
-                  >
-                    Contact
-                  </a>
-                </li>
+            {/* DESKTOP NAV */}
+            <nav className="hidden md:flex">
+              <ul className="flex items-center gap-7">
+                {navItems.map(([label, href]) => (
+                  <li key={label}>
+                    <a
+                      href={href}
+                      className="text-white !no-underline transition-colors hover:text-[#ff344c]"
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </nav>
+
+            {/* MOBILE TOGGLE */}
+            <button
+              onClick={() => setOpen(true)}
+              className="md:hidden text-white text-2xl"
+              aria-label="Open menu"
+            >
+              ☰
+            </button>
           </div>
-
-          {/* Left Section */}
-          {/* <div className="relative z-[99] flex items-center">
-            <div className="flex flex-wrap items-start">
-              <a
-                href="/community"
-                className="button-secondary small button-white _2-buttons-inside-menu w-button"
-              >
-                Join our community
-              </a>
-
-              <a href="/donate" className="button-primary small w-button">
-                Donate
-              </a>
-            </div>
-          </div> */}
         </div>
-      </div>
+      </header>
 
-      <div
-        className="w-nav-overlay"
-        data-wf-ignore=""
-        id="w-nav-overlay-0"
-      ></div>
-    </header>
+      {/* MOBILE MENU */}
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* BACKDROP */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 z-[999] bg-black/40 backdrop-blur-sm"
+            />
+
+            {/* SLIDE PANEL (LEFT → RIGHT) */}
+            <motion.aside
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 30,
+              }}
+              className="fixed top-0 left-0 z-[1000] h-full w-[80%] max-w-[320px] bg-[#1f3584] shadow-xl"
+            >
+              <div className="flex items-center justify-between px-6 py-6 border-b border-white/20">
+                <span className="text-white font-semibold">Menu</span>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="text-white text-2xl"
+                  aria-label="Close menu"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <nav className="mt-8">
+                <ul className="flex flex-col gap-6 px-6">
+                  {navItems.map(([label, href]) => (
+                    <li key={label}>
+                      <a
+                        href={href}
+                        className="text-white text-lg !no-underline transition-colors hover:text-[#ff344c]"
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* HEADER OFFSET */}
+      <div className="h-[88px]" />
+    </>
   );
 };
 

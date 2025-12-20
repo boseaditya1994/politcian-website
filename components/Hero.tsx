@@ -3,6 +3,7 @@ import Image from "next/image";
 const Hero = () => {
   return (
     <section
+      id="about"
       className="text-[#edeff5]
   bg-[#1f3584]
   bg-[url('/images/pattern.svg')]
