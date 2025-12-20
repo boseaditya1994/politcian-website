@@ -2,7 +2,7 @@ import React from "react";
 
 const Socials = () => {
   return (
-    <section className="py-[200px]">
+    <section className="py-[200px]" id="socials">
       <div className="max-w-[1268px] mx-auto px-6 flex-1">
         <div>
           <div
