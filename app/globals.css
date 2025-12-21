@@ -11486,3 +11486,7 @@ figcaption {
   font-style: normal;
   font-display: swap;
 }
+
+div._2p3a {
+  width: auto !important;
+}

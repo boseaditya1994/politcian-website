@@ -19,11 +19,13 @@ const Socials = () => {
                 id: "c93e96f6-d957-9e65-e9da-3187ac08b988",
                 img: "/images/facebook.svg",
                 title: "Facebook",
+                url: "https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/profile.php?id=61583978173791&tabs=timeline&width=500&height=600&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true",
               },
               {
                 id: "b0adc1fe-72c1-d639-1e9a-393df6613da9",
                 img: "/images/instagram.svg",
                 title: "Instagram",
+                url: "",
               },
             ].map((item) => (
               <div
@@ -41,9 +43,19 @@ const Socials = () => {
                   alt="Social icon"
                   className="align-middle border-0"
                 />
-                <div className="mt-10">
+                <div className="mt-10 w-full">
                   <h3>{item.title}</h3>
-                  {/* <!---Socials ---> */}
+                  <div className="w-full overflow-hidden">
+                    <div className="relative w-full h-[500px]">
+                      <iframe
+                        src={`${item.url}`}
+                        className="absolute inset-0 w-full h-full border-0"
+                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                        allowFullScreen
+                        title={`${item.title} Timeline`}
+                      />
+                    </div>
+                  </div>
                   <></>
                 </div>
               </div>
