@@ -1,68 +1,117 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
+import Script from "next/script";
 
 const Socials = () => {
+  /* Re-process Instagram embeds on mount */
+  useEffect(() => {
+    if ((window as any).instgrm) {
+      (window as any).instgrm.Embeds.process();
+    }
+  }, []);
+
   return (
     <section className="py-[200px]" id="socials">
-      <div className="max-w-[1268px] mx-auto px-6 flex-1">
-        <div>
-          <div
-            className="opacity-100 transform-gpu flex flex-col justify-start items-center text-center 
-            mx-auto max-w-[600px] mb-[40px]"
-          >
-            <div className="subtitle">Socials</div>
-          </div>
+      <div className="max-w-[1268px] mx-auto px-6">
+        {/* Section header */}
+        <div className="flex flex-col items-center text-center max-w-[600px] mx-auto mb-10">
+          <div className="subtitle">Socials</div>
+        </div>
 
-          {/* Socials Grid */}
-          <div className="grid auto-cols-fr grid-cols-2 gap-4">
-            {[
-              {
-                id: "c93e96f6-d957-9e65-e9da-3187ac08b988",
-                img: "/images/facebook.svg",
-                title: "Facebook",
-                url: "https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/profile.php?id=61583978173791&tabs=timeline&width=500&height=600&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true",
-              },
-              {
-                id: "b0adc1fe-72c1-d639-1e9a-393df6613da9",
-                img: "/images/instagram.svg",
-                title: "Instagram",
-                url: "",
-              },
-            ].map((item) => (
-              <div
-                key={item.id}
-                data-w-id={item.id}
-                className="opacity-100 transform-gpu flex flex-col justify-start items-center text-center
-                            overflow-hidden py-[56px] px-8 border border-[#f2f2f4] rounded-[16px] 
-                            bg-white shadow-[0_5px_14px_0_rgba(14,18,30,0.04)] text-[#717379] 
-                            no-underline"
-              >
-                <img
-                  src={`${item.img}`}
-                  loading="eager"
-                  width={50}
-                  alt="Social icon"
-                  className="align-middle border-0"
-                />
-                <div className="mt-10 w-full">
-                  <h3>{item.title}</h3>
-                  <div className="w-full overflow-hidden">
-                    <div className="relative w-full h-[500px]">
+        {/* Socials Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            {
+              id: "facebook",
+              img: "/images/facebook.svg",
+              title: "Facebook",
+              type: "facebook",
+              url:
+                "https://www.facebook.com/plugins/page.php" +
+                "?href=https://www.facebook.com/profile.php?id=61583978173791" +
+                "&tabs=timeline" +
+                "&width=500" +
+                "&height=600" +
+                "&adapt_container_width=true" +
+                "&small_header=true" +
+                "&hide_cover=false" +
+                "&show_facepile=false",
+            },
+            {
+              id: "instagram",
+              img: "/images/instagram.svg",
+              title: "Instagram",
+              type: "instagram",
+              url: "https://www.instagram.com/p/DSFhNT3Acle/",
+              profile: "https://www.instagram.com/YOUR_USERNAME/",
+            },
+          ].map((item) => (
+            <div
+              key={item.id}
+              className="flex flex-col items-center text-center overflow-hidden
+                         py-14 px-8
+                         bg-white shadow-[0_5px_14px_0_rgba(14,18,30,0.04)]"
+            >
+              {/* Icon */}
+              <img
+                src={item.img}
+                width={50}
+                alt={`${item.title} icon`}
+                className="mb-6"
+              />
+
+              <h3 className="mb-6">{item.title}</h3>
+
+              {/* FACEBOOK EMBED */}
+              {item.type === "facebook" && (
+                <div className="w-full flex justify-center">
+                  <div className="w-full max-w-[500px] overflow-hidden">
+                    <div className="relative w-full h-[600px]">
                       <iframe
-                        src={`${item.url}`}
+                        src={item.url}
                         className="absolute inset-0 w-full h-full border-0"
                         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
                         allowFullScreen
-                        title={`${item.title} Timeline`}
+                        title="Facebook Page Timeline"
                       />
                     </div>
                   </div>
-                  <></>
                 </div>
-              </div>
-            ))}
-          </div>
+              )}
+
+              {/* INSTAGRAM EMBED (POST) */}
+              {item.type === "instagram" && (
+                <div className="w-full">
+                  <blockquote
+                    className="instagram-media w-full"
+                    data-instgrm-permalink={item.url}
+                    data-instgrm-version="14"
+                    style={{ margin: 0 }}
+                  />
+                </div>
+              )}
+
+              {/* OPTIONAL CTA FALLBACK */}
+              {/* {item.type === "instagram" && (
+                <a
+                  href={item.profile}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-6 inline-flex items-center justify-center w-full
+                             rounded-lg bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500
+                             py-3 text-white font-semibold transition hover:opacity-90"
+                >
+                  Visit Instagram Profile
+                </a>
+              )} */}
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Instagram embed script */}
+      <Script src="https://www.instagram.com/embed.js" strategy="lazyOnload" />
     </section>
   );
 };
